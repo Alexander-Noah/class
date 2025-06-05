@@ -50,9 +50,9 @@ public class login extends JFrame {
         this.getContentPane().add(LoginButton);
         LoginButton.setBounds(274, 266, 90, 40);
         this.getContentPane().add(UserField);
-        UserField.setBounds(150, 80, 227, UserField.getPreferredSize().height);
+        UserField.setBounds(150, 80, 227, 30);
         this.getContentPane().add(passwordField);
-        passwordField.setBounds(150, 123, 227, passwordField.getPreferredSize().height);
+        passwordField.setBounds(150, 123, 227, 30);
 
         // 按下登录按钮事件
         LoginButton.addActionListener(e -> loginAction());
