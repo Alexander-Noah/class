@@ -1,25 +1,41 @@
 import javax.swing.*;
 import java.awt.*;
-/*
- * Created by JFormDesigner on Thu Jun 05 09:52:36 CST 2025
- */
 
 /**
  * @author zheng
  */
+
 public class login extends JFrame {
+
+    //把变量放这，方便调用
+    private JLabel title;
+    private JLabel UserTxt;
+    private JLabel PassWordTxt;
+    private JButton LoginButton;
+    private JTextField UserField;
+    private JPasswordField passwordField;
+    private JButton RegisterButton;
+    private JComboBox<String> ChooseID;
+    private JLabel IDTxt;
+    private JLabel ClassTxt;
+    private JComboBox<String> ChooseClass;
+
+
     public login() {
         //初始化界面
         initFrame();
         //初始化组件
         initView();
+        //窗口居中显示
+        this.setLocationRelativeTo(null);
+        //关闭窗口程序停止
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //显示界面
         this.setVisible(true);
-
     }
 
     // 在 login 类中定义一个 User 数组作为模拟数据库
-    private User[] users = {
+    private final User[] users = {
             new User("student01", "123456", "学生", "计算机科学与技术1班"),
             new User("teacher01", "abcdef", "教师", "软件工程1班"),
             new User("admin", "admin123", "管理员", "网络工程1班")
@@ -30,60 +46,61 @@ public class login extends JFrame {
         title.setText("疫情防控登入系统");
         title.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 24));
         this.getContentPane().add(title);
-        title.setBounds(155, 20, 225, 30);
+        title.setBounds(115, 20, 225, 30);
 
         //---- UserTxt ----
         UserTxt.setText("账号");
         UserTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(UserTxt);
-        UserTxt.setBounds(85, 70, 52, 35);
+        UserTxt.setBounds(75, 70, 52, 28);
+
+        //---- UserField ----
+        this.getContentPane().add(UserField);
+        UserField.setBounds(150, 70, 225, 28);
 
         //---- PassWordTxt ----
         PassWordTxt.setText("密码");
         PassWordTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(PassWordTxt);
-        PassWordTxt.setBounds(80, 115, 54, 35);
+        PassWordTxt.setBounds(75, 115, 54, 28);
+
+        //---- PassWordField ----
+        this.getContentPane().add(passwordField);
+        passwordField.setBounds(150, 115, 225,28);
+
+        //---- ChooseID ----
+        this.getContentPane().add(ChooseID);
+        ChooseID.setBounds(150, 160, 225, 28);
+
+        //---- IDTxt ----
+        IDTxt.setText("身份");
+        IDTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+        this.getContentPane().add(IDTxt);
+        IDTxt.setBounds(75, 160, 42, 28);
+
+        //---- ClassTxt ----
+        ClassTxt.setText("班级");
+        ClassTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+        this.getContentPane().add(ClassTxt);
+        ClassTxt.setBounds(75, 205, 42, 28);
+
+        //---- ChooseClass ----
+        this.getContentPane().add(ChooseClass);
+        ChooseClass.setBounds(150, 205, 225,28);
 
         //---- LoginButton ----
         LoginButton.setText("登入");
-        LoginButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
+        LoginButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(LoginButton);
-        LoginButton.setBounds(274, 266, 90, 40);
-        this.getContentPane().add(UserField);
-        UserField.setBounds(150, 80, 227, 30);
-        this.getContentPane().add(passwordField);
-        passwordField.setBounds(150, 123, 227, 30);
-
-        // 按下登录按钮事件
+        LoginButton.setBounds(255,255 , 90, 35);
         LoginButton.addActionListener(e -> loginAction());
 
         //---- RegisterButton ----
         RegisterButton.setText("注册");
-        RegisterButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
+        RegisterButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(RegisterButton);
-        RegisterButton.setBounds(127, 265, 90, 40);
-
-
-        this.getContentPane().add(ChooseID);
-        ChooseID.setBounds(150, 170, 222, ChooseID.getPreferredSize().height);
-
-        //---- IDTxt ----
-        IDTxt.setText("身份");
-        IDTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
-        this.getContentPane().add(IDTxt);
-        IDTxt.setBounds(85, 167, 42, 28);
-
-        //---- ClassTxt ----
-        ClassTxt.setText("班级");
-        ClassTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
-        this.getContentPane().add(ClassTxt);
-        ClassTxt.setBounds(85, 218, 42, 28);
-
-
-        this.getContentPane().add(ChooseClass);
-        ChooseClass.setBounds(150, 220, 222,28);
-
-        this.getContentPane().setPreferredSize(new Dimension(460, 365));
+        RegisterButton.setBounds(105,255 , 90, 35);
+        RegisterButton.addActionListener(e -> RegisterAction());
 
         // 添加数据到身份下拉框
         ChooseID.addItem("学生");
@@ -115,22 +132,24 @@ public class login extends JFrame {
         //注册按钮
         RegisterButton = new JButton();
         //身份选择框
-        ChooseID = new JComboBox();
+        ChooseID = new JComboBox<>();
         //身份文本
         IDTxt= new JLabel();
         //班级文本
         ClassTxt = new JLabel();
         //班级选择框
-        ChooseClass = new JComboBox();
+        ChooseClass = new JComboBox<>();
         //设置界面大小
-        this.setBounds(100, 100, 450, 400);
+        this.setBounds(100, 100, 450, 350);
         //取消默认的布局
         this.getContentPane().setLayout(null);
-
+        //禁止调整界面大小
+        this.setResizable(false);
 
     }
 
     private void loginAction() {
+        //登录功能
         //从输入框中获取输入的用户名
         String username =UserField.getText().trim();
         //从输入框中获取输入的密码
@@ -154,28 +173,17 @@ public class login extends JFrame {
 
         if (success) {
             JOptionPane.showMessageDialog(this, "登录成功！");
-            //if(role)
-            //new UI();
         } else {
             JOptionPane.showMessageDialog(this, "账号、密码或身份信息错误！", "错误", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    private JLabel title;
-    private JLabel UserTxt;
-    private JLabel PassWordTxt;
-    private JButton LoginButton;
-    private JTextField UserField;
-    private JPasswordField passwordField;
-    private JButton RegisterButton;
-    private JComboBox ChooseID;
-    private JLabel IDTxt;
-    private JLabel ClassTxt;
-    private JComboBox ChooseClass;
+    private void RegisterAction() {
+        //注册功能
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new login());
     }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+
+
 }
