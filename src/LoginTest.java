@@ -1,5 +1,3 @@
-public class LoginTest {
-    public static void main(String[] args) {
-        new login();
-    }
+public static void main() {
+    new login();
 }

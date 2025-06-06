@@ -11,8 +11,8 @@ public class Enroll extends JFrame {
     //把变量放这，方便调用
     private JLabel Title;
     private JLabel TextUser;
-    private JLabel PassworldText;
-    private JLabel PassworldTest2;
+    private JLabel PasswordText;
+    private JLabel PasswordTest2;
     private JTextField UserField;
     private JPasswordField passwordText;
     private JPasswordField passwordText2;
@@ -53,17 +53,17 @@ public class Enroll extends JFrame {
         contentPane.add(TextUser);
         TextUser.setBounds(84, 65, 46, 30);
 
-        //---- PassworldText ----
-        PassworldText.setText("密码");
-        PassworldText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
-        contentPane.add(PassworldText);
-        PassworldText.setBounds(84, 115, 46, 30);
+        //---- PasswordText ----
+        PasswordText.setText("密码");
+        PasswordText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+        contentPane.add(PasswordText);
+        PasswordText.setBounds(84, 115, 46, 30);
 
         //---- passwordText ----
-        PassworldTest2.setText("确认密码");
-        PassworldTest2.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
-        contentPane.add(PassworldTest2);
-        PassworldTest2.setBounds(49, 165, 81, 30);
+        PasswordTest2.setText("确认密码");
+        PasswordTest2.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+        contentPane.add(PasswordTest2);
+        PasswordTest2.setBounds(49, 165, 81, 30);
 
         //----UserField----
         contentPane.add(UserField);
@@ -115,7 +115,7 @@ public class Enroll extends JFrame {
         RegisterButton.setBounds(158, 315, 240, 35);
 
         // 注册按钮点击事件
-        RegisterButton.addActionListener(e -> {
+        RegisterButton.addActionListener(_ -> {
             String user = UserField.getText().trim();
             String pass1 = new String(passwordText.getPassword());
             String pass2 = new String(passwordText2.getPassword());
@@ -167,11 +167,11 @@ public class Enroll extends JFrame {
         //账号输入
         UserField = new JTextField();
         //密码文本
-        PassworldText = new JLabel();
+        PasswordText = new JLabel();
         //密码输入
         passwordText = new JPasswordField();
         //确认密码文本
-        PassworldTest2 = new JLabel();
+        PasswordTest2 = new JLabel();
         //确认密码输入
         passwordText2 = new JPasswordField();
         //身份选择框
@@ -191,8 +191,8 @@ public class Enroll extends JFrame {
         //禁止调整界面大小
         this.setResizable(false);
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Enroll());
+    public static void main() {
+        SwingUtilities.invokeLater(Enroll::new);
     }
 }
 

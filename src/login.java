@@ -94,14 +94,14 @@ public class login extends JFrame {
         LoginButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(LoginButton);
         LoginButton.setBounds(255,255 , 90, 35);
-        LoginButton.addActionListener(e -> loginAction());
+        LoginButton.addActionListener(_ -> loginAction());
 
         //---- RegisterButton ----
         RegisterButton.setText("注册");
         RegisterButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(RegisterButton);
         RegisterButton.setBounds(105,255 , 90, 35);
-        RegisterButton.addActionListener(e -> RegisterAction());
+        RegisterButton.addActionListener(_ -> RegisterAction());
 
         // 添加数据到身份下拉框
         ChooseID.addItem("学生");
