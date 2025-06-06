@@ -3,6 +3,7 @@ import java.awt.*;
 
 /**
  * @author zheng
+ * 登入页面
  */
 
 public class login extends JFrame {

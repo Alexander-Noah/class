@@ -1,9 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-/*
- * Created by JFormDesigner on Thu Jun 05 22:27:43 CST 2025
- */
-
 /**
  * @author zheng
  * 注册页面
@@ -40,8 +36,6 @@ public class Enroll extends JFrame {
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-
 
         //======== this ========
         var contentPane = getContentPane();
@@ -49,7 +43,7 @@ public class Enroll extends JFrame {
 
         //---- Title ----
         Title.setText("疫情防控注册系统");
-        Title.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 22));
+        Title.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 24));
         contentPane.add(Title);
         Title.setBounds(145, 10, 300, 38);
 
@@ -87,12 +81,13 @@ public class Enroll extends JFrame {
         IDTxt.setText("身份");
         IDTxt.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         this.getContentPane().add(IDTxt);
-        IDTxt.setBounds(75, 215, 42, 28);
+        IDTxt.setBounds(84, 215, 42, 28);
 
         //---- ChooseID ----
         this.getContentPane().add(ChooseID);
-        ChooseID.setBounds(150, 215, 225, 28);
+        ChooseID.setBounds(150, 215, 280, 30);
         // 添加数据到身份下拉框
+        ChooseID.addItem("");
         ChooseID.addItem("学生");
         ChooseID.addItem("教师");
 
@@ -106,6 +101,7 @@ public class Enroll extends JFrame {
         this.getContentPane().add(ChooseClass);
         ChooseClass.setBounds(151, 265, 280,30);
         // 添加数据到班级下拉框
+        ChooseClass.addItem("");
         ChooseClass.addItem("计算机科学与技术1班");
         ChooseClass.addItem("计算机科学与技术2班");
         ChooseClass.addItem("软件工程1班");
@@ -116,30 +112,53 @@ public class Enroll extends JFrame {
         RegisterButton.setText("注册");
         RegisterButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
         contentPane.add(RegisterButton);
-        RegisterButton.setBounds(162, 315, 240, RegisterButton.getPreferredSize().height);
+        RegisterButton.setBounds(158, 315, 240, 35);
 
-        {
-            // compute preferred size
-            Dimension preferredSize = new Dimension();
-            for(int i = 0; i < contentPane.getComponentCount(); i++) {
-                Rectangle bounds = contentPane.getComponent(i).getBounds();
-                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+        // 注册按钮点击事件
+        RegisterButton.addActionListener(e -> {
+            String user = UserField.getText().trim();
+            String pass1 = new String(passwordText.getPassword());
+            String pass2 = new String(passwordText2.getPassword());
+            String role = (String) ChooseID.getSelectedItem();
+            String clazz = (String) ChooseClass.getSelectedItem();
+
+            if (user.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "学号不能为空！", "提示", JOptionPane.WARNING_MESSAGE);
+                return;
             }
-            Insets insets = contentPane.getInsets();
-            preferredSize.width += insets.right;
-            preferredSize.height += insets.bottom;
-            contentPane.setMinimumSize(preferredSize);
-            contentPane.setPreferredSize(preferredSize);
-        }
-        pack();
-        setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+
+            if (pass1.isEmpty() || pass2.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "密码和确认密码不能为空！", "提示", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (!pass1.equals(pass2)) {
+                JOptionPane.showMessageDialog(this, "两次输入的密码不一致！", "错误", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (pass1.length() < 6 || pass1.length() > 16) {
+                JOptionPane.showMessageDialog(this, "密码长度应为6到16位！", "提示", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (role == null || role.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "请选择身份！", "提示", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (clazz == null || clazz.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "请选择班级！", "提示", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 所有验证通过
+            JOptionPane.showMessageDialog(this, "注册成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
     private void initFrame(){
         //标题文本
         Title = new JLabel();
@@ -166,7 +185,7 @@ public class Enroll extends JFrame {
         //注册按钮
         RegisterButton = new JButton();
         //设置界面大小
-        this.setBounds(100, 100, 450, 350);
+        this.setBounds(100, 100, 500, 420);
         //取消默认的布局
         this.getContentPane().setLayout(null);
         //禁止调整界面大小
