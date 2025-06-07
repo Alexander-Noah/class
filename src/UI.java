@@ -1,8 +1,21 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class UI extends JFrame {
+    public class UI extends JFrame implements ActionListener {
 
     int ID;
+
+    //学生查看信息
+    JMenuItem ShowMessage;
+    //学生请假
+    JMenuItem ApplyHoliday;
+    //教师发布信息
+    JMenuItem ReleaseMessage;
+    //教师修改信息
+    JMenuItem ReviseMessage;
+    //教师审批学生请假
+    JMenuItem ApprovalHoliday;
 
     //接收id，0表示学生，1表示教师，2表示管理员
     public UI(int ID){
@@ -10,31 +23,37 @@ public class UI extends JFrame {
         init();
         this.setVisible(true);
     }
+
     public void init(){
         //取消原有的布局
         this.setLayout(null);
         //设置置顶
         this.setAlwaysOnTop(true);
         //信息的菜单选项
-        JMenuItem message =new JMenuItem("信息");
+        JMenu message =new JMenu("信息");
         //请假的菜单选项
-        JMenuItem Holiday=new JMenuItem("请假");
+        JMenu Holiday=new JMenu("请假");
         //特有的功能
         if(ID==0){
             //在信息选项，学生只能查看信息
-            JMenu ShowMessage =new JMenu("查看信息");
+            ShowMessage =new JMenuItem("查看信息");
+            ShowMessage.addActionListener(this);
             message.add(ShowMessage);
             //在请假选项中，学生只能申请请假并查看状态
-            JMenu ApplyHoliday =new JMenu("学生请假");
+            ApplyHoliday =new JMenuItem("学生请假");
+            ApplyHoliday.addActionListener(this);
             Holiday.add(ApplyHoliday);
         }else if(ID==1){
             //在教师选项，教师可以发布课修改信息
-            JMenu ReleaseMessage =new JMenu("发布信息");
+            ReleaseMessage =new JMenuItem("发布信息");
+            ReleaseMessage.addActionListener(this);
             message.add(ReleaseMessage);
-            JMenu ReviseMessage =new JMenu("修改信息");
+            ReviseMessage =new JMenuItem("修改信息");
+            ReviseMessage.addActionListener(this);
             message.add(ReviseMessage);
             //在教师选项中，教师可以审批请假
-            JMenu ApprovalHoliday=new JMenu("审批请假");
+            ApprovalHoliday=new JMenuItem("审批请假");
+            ApprovalHoliday.addActionListener(this);
             Holiday.add(ApprovalHoliday);
         }
         //设置工具栏
@@ -46,6 +65,24 @@ public class UI extends JFrame {
         //把工具栏添加到界面
         this.setJMenuBar(menuBar);
         //设置总的界面的大小
-        this.setBounds(100, 100, 450, 300);
+        this.setBounds(100, 100, 900, 600);
+        //关闭窗口程序停止
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //设置背景图片
+        ImageIcon icon = new ImageIcon("src\\background.jpg");
+        JLabel p = new JLabel(icon);
+        p.setBounds(0, 0, 900, 600);
+        this.add(p);
     }
-}
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+            if(source==ShowMessage){
+
+            }
+            if(source==ApplyHoliday){
+
+            }
+        }
+    }

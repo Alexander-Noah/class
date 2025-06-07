@@ -7,7 +7,7 @@ import javax.swing.*;
  * 注册页面
  * 注册页面
  */
-public class Enroll extends JFrame {
+public class Register extends JFrame {
     //把变量放这，方便调用
     private JLabel Title;
     private JLabel TextUser;
@@ -21,7 +21,8 @@ public class Enroll extends JFrame {
     private JComboBox<String> ChooseClass;
     private JComboBox<String> ChooseID;
     private JLabel IDTxt;
-    public Enroll() {
+
+    public Register() {
         //初始化界面
         initFrame();
         //初始化组件
@@ -86,6 +87,7 @@ public class Enroll extends JFrame {
         //---- ChooseID ----
         this.getContentPane().add(ChooseID);
         ChooseID.setBounds(150, 215, 280, 30);
+
         // 添加数据到身份下拉框
         ChooseID.addItem("");
         ChooseID.addItem("学生");
@@ -100,6 +102,7 @@ public class Enroll extends JFrame {
         //---- ChooseClass ----
         this.getContentPane().add(ChooseClass);
         ChooseClass.setBounds(151, 265, 280,30);
+
         // 添加数据到班级下拉框
         ChooseClass.addItem("");
         ChooseClass.addItem("计算机科学与技术1班");
@@ -154,6 +157,14 @@ public class Enroll extends JFrame {
 
             // 所有验证通过
             JOptionPane.showMessageDialog(this, "注册成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
+
+            login.userList.add(new User(user,pass1,role,clazz));
+
+
+
+            // 关闭注册窗口，跳转到登录窗口
+            this.dispose(); // 关闭当前窗口
+            new login();    // 打开登录窗口
         });
 
 
@@ -192,7 +203,7 @@ public class Enroll extends JFrame {
         this.setResizable(false);
     }
     public static void main() {
-        SwingUtilities.invokeLater(Enroll::new);
+        SwingUtilities.invokeLater(Register::new);
     }
 }
 

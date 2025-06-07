@@ -1,5 +1,4 @@
 public class User {
-
     private String username;
     private String password;
     private String role;
@@ -12,9 +11,18 @@ public class User {
         this.clazz = clazz;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", clazz='" + clazz + '\'' +
+                '}';
+    }
+
     public String getUsername() { return username; }
     public String getPassword() { return password; }
     public String getRole() { return role; }
     public String getClazz() { return clazz; }
 }
-
