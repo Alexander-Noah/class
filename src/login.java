@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zheng
@@ -36,11 +38,15 @@ public class login extends JFrame {
     }
 
     // 在 login 类中定义一个 User 数组作为模拟数据库
-    private final User[] users = {
-            new User("student01", "123456", "学生", "计算机科学与技术1班"),
-            new User("teacher01", "abcdef", "教师", "软件工程1班"),
-            new User("admin", "admin123", "管理员", "网络工程1班")
-    };
+    public static List<User> userList = new ArrayList<>();
+
+    // 在静态代码块中添加初始用户
+    static {
+        userList.add(new User("student01", "123456", "学生", "计算机科学与技术1班"));
+        userList.add(new User("teacher01", "ebadf", "教师", "软件工程1班"));
+        userList.add(new User("admin", "admin123", "管理员", "网络工程1班"));
+    }
+
 
     private void initView() {
         //---- title ----
@@ -162,7 +168,7 @@ public class login extends JFrame {
 
         boolean success = false;
 
-        for (User user : users) {
+        for (User user : userList) {
             if (user.getUsername().equals(username) &&
                     user.getPassword().equals(password) &&
                     user.getRole().equals(role) &&
@@ -172,8 +178,15 @@ public class login extends JFrame {
             }
         }
 
+
         if (success) {
-            JOptionPane.showMessageDialog(this, "登录成功！");
+//            JOptionPane.showMessageDialog(this, "登录成功！");
+            if(role.equals("学生"))
+                new UI(0);
+            else if (role.equals("教师"))
+                    new UI(1);
+            else new UI(2);
+            this.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(this, "账号、密码或身份信息错误！", "错误", JOptionPane.ERROR_MESSAGE);
         }
@@ -181,6 +194,10 @@ public class login extends JFrame {
 
     private void RegisterAction() {
         //注册功能
+        // 关闭当前登录窗口
+        this.dispose();
+        // 打开注册页面
+        new Register();
 
     }
 
