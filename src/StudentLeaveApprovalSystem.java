@@ -3,14 +3,17 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 教师审批学生请假系统
- * 功能：教师审批学生提交的请假申请
+/*
+ * 教师审批请假，已经接入主UI
  */
 public class StudentLeaveApprovalSystem extends JFrame {
 
@@ -29,6 +32,7 @@ public class StudentLeaveApprovalSystem extends JFrame {
     private JButton exportButton;
     private JTextField searchField;
     private JButton searchButton;
+    private JButton backButton;
 
     // 数据模型
     private DefaultTableModel tableModel;
@@ -181,6 +185,12 @@ public class StudentLeaveApprovalSystem extends JFrame {
         exportButton.addActionListener(e -> exportData());
         bottomPanel.add(exportButton);
 
+        //返回按钮
+        backButton = new JButton("返回");
+        styleButton(backButton, new Color(120, 120, 120)); // Adjusted color for distinction
+        backButton.addActionListener(e -> BackButtonActionPerformed());
+        bottomPanel.add(backButton);
+
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
@@ -210,7 +220,17 @@ public class StudentLeaveApprovalSystem extends JFrame {
      * @param rowIndex 表格中选中的行索引
      */
     private void updateDetailArea(int rowIndex) {
-        StudentLeaveApplication app = leaveApplications.get(rowIndex);
+        // Find the correct application based on the ID in the table view,
+        // which is safer after a search/filter operation.
+        int modelRowIndex = leaveTable.convertRowIndexToModel(rowIndex);
+        int applicationId = (int) tableModel.getValueAt(modelRowIndex, 0);
+
+        StudentLeaveApplication app = leaveApplications.stream()
+                .filter(a -> a.getId() == applicationId)
+                .findFirst()
+                .orElse(null);
+
+        if (app == null) return;
 
         String detailInfo = String.format(
                 "学生姓名: %s\n" +
@@ -243,10 +263,24 @@ public class StudentLeaveApprovalSystem extends JFrame {
         }
 
         String decision = (String) statusComboBox.getSelectedItem();
-        StudentLeaveApplication app = leaveApplications.get(selectedRow);
+
+        // Get application ID from the selected row in the table model
+        int modelRowIndex = leaveTable.convertRowIndexToModel(selectedRow);
+        int applicationId = (int) tableModel.getValueAt(modelRowIndex, 0);
+
+        // Find the application in the master list
+        StudentLeaveApplication app = leaveApplications.stream()
+                .filter(a -> a.getId() == applicationId)
+                .findFirst()
+                .orElse(null);
+
+        if (app == null) {
+            showMessage("无法找到所选的申请记录。", "错误", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // 更新状态
-        String newStatus = "";
+        String newStatus;
         switch (decision) {
             case "批准":
                 newStatus = "已批准";
@@ -257,17 +291,20 @@ public class StudentLeaveApprovalSystem extends JFrame {
             case "待补充材料":
                 newStatus = "待补充材料";
                 break;
+            default:
+                newStatus = app.getStatus(); // No change
+                break;
         }
 
         app.setStatus(newStatus);
 
         // 更新表格
-        tableModel.setValueAt(newStatus, selectedRow, 6);
+        tableModel.setValueAt(newStatus, modelRowIndex, 6);
 
         // 记录审批人和审批时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String approvalInfo = "\n\n审批信息:\n" +
-                "审批教师: 李老师\n" +
+                "审批教师: 李老师\n" + // This could be replaced with actual logged-in user info
                 "审批时间: " + sdf.format(new Date()) +
                 "\n审批结果: " + newStatus;
 
@@ -323,15 +360,69 @@ public class StudentLeaveApprovalSystem extends JFrame {
      * 导出数据
      */
     private void exportData() {
+        if (leaveApplications.isEmpty()) {
+            showMessage("没有数据可供导出。", "提示", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("导出请假审批数据");
+        fileChooser.setDialogTitle("导出请假审批数据为 CSV 文件");
+        // Suggest a default filename
+        fileChooser.setSelectedFile(new File("leave_applications_export.csv"));
 
         int userSelection = fileChooser.showSaveDialog(this);
+
         if (userSelection == JFileChooser.APPROVE_OPTION) {
-            // 实际应用中这里应实现导出逻辑
-            showMessage("数据已导出到: " + fileChooser.getSelectedFile().getName(),
-                    "导出成功", JOptionPane.INFORMATION_MESSAGE);
+            File fileToSave = fileChooser.getSelectedFile();
+            // Ensure the file has a .csv extension
+            if (!fileToSave.getName().toLowerCase().endsWith(".csv")) {
+                fileToSave = new File(fileToSave.getParentFile(), fileToSave.getName() + ".csv");
+            }
+
+            // Use try-with-resources to handle the FileWriter and BufferedWriter automatically
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
+                // Define headers for the CSV file, including the reason
+                String[] csvHeaders = {COLUMN_NAMES[0], COLUMN_NAMES[1], COLUMN_NAMES[2], COLUMN_NAMES[3],
+                        COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], "请假原因"};
+                writer.write(String.join(",", csvHeaders));
+                writer.newLine();
+
+                // Write the data rows
+                for (StudentLeaveApplication app : leaveApplications) {
+                    // Sanitize the reason field to handle commas and newlines for proper CSV formatting
+                    String sanitizedReason = "\"" + app.getReason().replace("\"", "\"\"").replace("\n", " ") + "\"";
+
+                    String[] rowData = {
+                            String.valueOf(app.getId()),
+                            app.getStudentName(),
+                            app.getStudentId(),
+                            app.getLeaveType(),
+                            app.getStartTime(),
+                            app.getEndTime(),
+                            app.getStatus(),
+                            sanitizedReason
+                    };
+                    writer.write(String.join(",", rowData));
+                    writer.newLine();
+                }
+
+                showMessage("数据已成功导出到: " + fileToSave.getAbsolutePath(),
+                        "导出成功", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (IOException ex) {
+                // Log the exception and show an error message to the user
+                ex.printStackTrace();
+                showMessage("导出数据时发生错误: " + ex.getMessage(),
+                        "导出失败", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
+
+    private void BackButtonActionPerformed() {
+        // Assuming 'UI' is another frame in your application
+        // For demonstration, this will just close the current window.
+         new UI(1); // Your original code
+        this.dispose(); // Close this window
     }
 
     /**
@@ -379,45 +470,21 @@ public class StudentLeaveApprovalSystem extends JFrame {
         }
 
         // Getter方法
-        public int getId() {
-            return id;
-        }
-
-        public String getStudentName() {
-            return studentName;
-        }
-
-        public String getStudentId() {
-            return studentId;
-        }
-
-        public String getLeaveType() {
-            return leaveType;
-        }
-
-        public String getStartTime() {
-            return startTime;
-        }
-
-        public String getEndTime() {
-            return endTime;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public String getReason() {
-            return reason;
-        }
+        public int getId() { return id; }
+        public String getStudentName() { return studentName; }
+        public String getStudentId() { return studentId; }
+        public String getLeaveType() { return leaveType; }
+        public String getStartTime() { return startTime; }
+        public String getEndTime() { return endTime; }
+        public String getStatus() { return status; }
+        public String getReason() { return reason; }
 
         // Setter方法
-        public void setStatus(String status) {
-            this.status = status;
-        }
+        public void setStatus(String status) { this.status = status; }
     }
 
     public static void main(String[] args) {
+        // Use the event dispatch thread to build and show the UI
         SwingUtilities.invokeLater(() -> new StudentLeaveApprovalSystem());
     }
 }

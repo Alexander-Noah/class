@@ -66,6 +66,8 @@ import java.awt.event.ActionListener;
         this.setJMenuBar(menuBar);
         //设置总的界面的大小
         this.setBounds(100, 100, 900, 600);
+        //页面居中显示
+        this.setLocationRelativeTo(null);
         //关闭窗口程序停止
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         //设置背景图片
@@ -79,10 +81,23 @@ import java.awt.event.ActionListener;
         public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
             if(source==ShowMessage){
-
+                new ShowMessage();
+                //NotificationModule
+                this.setVisible(false);
             }
             if(source==ApplyHoliday){
+                new  LeaveApplication();
+                this.setVisible(false);
+            }
+            if(source==ReleaseMessage){
 
+            }
+            if(source==ReviseMessage){
+
+            }
+            if(source==ApprovalHoliday){
+                new StudentLeaveApprovalSystem();
+                this.setVisible(false);
             }
         }
     }

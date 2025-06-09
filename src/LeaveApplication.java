@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,6 +7,7 @@ import java.util.Date;
  * 请假申请页面
  * 请假申请页面
  * 请假申请页面
+ * 已接入主UI
  */
 public class LeaveApplication extends JFrame {
     // 组件声明
@@ -152,7 +151,18 @@ public class LeaveApplication extends JFrame {
         cancelButton = new JButton("取消");
         cancelButton.setBounds(280, 380, 120, 30);
         cancelButton.setFont(new Font("Microsoft YaHei", Font.PLAIN, 16));
-        cancelButton.addActionListener(e -> this.dispose());
+
+
+
+        //需要加跳转
+        cancelButton.addActionListener((e -> CancelButtonmode()));
+
+
+
+
+
+
+
         contentPane.add(cancelButton);
     }
 
@@ -209,11 +219,12 @@ public class LeaveApplication extends JFrame {
 
         if (option == JOptionPane.OK_OPTION) {
             JOptionPane.showMessageDialog(this, "请假申请已提交", "成功", JOptionPane.INFORMATION_MESSAGE);
+            new UI(0);
             this.dispose();
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LeaveApplication());
+    private void CancelButtonmode(){
+        new UI(0);
+        this.dispose();
     }
 }

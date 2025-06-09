@@ -18,3 +18,19 @@
 | 高等数学       | 王教授   | 周一 1-2节     | 教201    |
 | Java程序设计   | 李老师   | 周三 3-4节     | 计305    |
 | 数据库原理     | 张教授   | 周五 5-6节     | 图102    |
+
+## 项目结构
+|            名称            | 模块             |
+| :------------------------: | ---------------- |
+|         Curriculum         | 课程信息模块     |
+|      LeaveApplication      | 请假申请页面     |
+|           login            | 登入页面         |
+|         LoginTest          | 登入页面启动     |
+|     NotificationModule     | 通知模块         |
+|          Register          | 注册模块         |
+|        ShowMessage         | 基本信息模块     |
+| StudentLeaveApprovalSystem | 教师审批请假模块 |
+|             UI             | ui主页面模块     |
+|           UITest           | 主页面启动模块   |
+|            user            | 对象数组登入信息 |
+

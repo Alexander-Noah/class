@@ -3,6 +3,8 @@ import java.awt.*;
 
 /**
  * 通知模块界面类
+ *
+ * 接入主ui
  * @author zheng
  */
 public class NotificationModule extends JFrame {
@@ -107,7 +109,7 @@ public class NotificationModule extends JFrame {
         setLocationRelativeTo(getOwner());
     }
 
-    /**
+    /**yi'x
      * 初始化框架设置
      */
     private void initFrame() {

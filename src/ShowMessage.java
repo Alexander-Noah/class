@@ -6,6 +6,7 @@ import javax.swing.*;
  * 基本信息显示页面！！！
  * 基本信息显示页面！！！
  * 基本信息显示页面！！！
+ * 已经接入主UI
  */
 public class ShowMessage extends JFrame {
     //把变量放这，方便调用
@@ -26,6 +27,7 @@ public class ShowMessage extends JFrame {
     private JLabel EnrollmentDateDisplayBox;
     private JButton CourseInformation;
     private JButton notice;
+    private JButton backButton;
 
 
     public ShowMessage() {
@@ -68,17 +70,23 @@ public class ShowMessage extends JFrame {
         // 设置按钮
         setupButton(CourseInformation, "课程信息", 120, 412, 120, 35);
         setupButton(notice, "通知", 300, 412, 120, 36);
+        setupButton(backButton,"返回",10,10,100,30);
 
-        CourseInformation.addActionListener(e -> {
+        CourseInformation.addActionListener(_ -> {
             // 创建课程信息页面
             Curriculum curriculumPage = new Curriculum();
             curriculumPage.setVisible(true);
             this.dispose(); // 关闭当前窗口（可选）
         });
-        notice.addActionListener(e -> {
+        notice.addActionListener(_ -> {
             // 创建通知页面
             NotificationModule NotificationModulePage = new NotificationModule();
             NotificationModulePage.setVisible(true);
+            this.dispose(); // 关闭当前窗口（可选）
+        });
+        backButton.addActionListener(_ -> {
+            // 创建主页面
+            new UI(0);
             this.dispose(); // 关闭当前窗口（可选）
         });
 
@@ -146,6 +154,8 @@ public class ShowMessage extends JFrame {
         EnrollmentDateDisplayBox = new JLabel();
         //课程信息按钮
         CourseInformation = new JButton();
+        //返回按钮
+        backButton = new JButton();
         //教师通知按钮
         notice = new JButton();
         //设置界面大小

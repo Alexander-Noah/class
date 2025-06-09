@@ -6,6 +6,7 @@ import javax.swing.*;
  * 课程信息模块！！！
  * 课程信息模块！！！
  * 课程信息模块！！！
+ * 接入主UI
  */
 public class Curriculum extends JFrame {
     //变量调用
